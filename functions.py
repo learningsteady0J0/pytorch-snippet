@@ -12,7 +12,7 @@ def Train(model, train_DL, val_DL, criterion, optimizer,
           save_model_path, save_history_path, 
           **kwargs):
 
-    if "LR_STEP" in kwargs:
+    if "LR_STEP" in kwargs: # learning scheduling
         scheduler = StepLR(optimizer, step_size = kwargs["LR_STEP"], gamma = kwargs["LR_GAMMA"])
     else:
         scheduler = None
@@ -43,7 +43,7 @@ def Train(model, train_DL, val_DL, criterion, optimizer,
                             "ep":ep,
                             "optimizer":optimizer,
                             "scheduler":scheduler}, save_model_path)
-        if "LR_STEP" in kwargs:
+        if "LR_STEP" in kwargs:  # learning scheduling update
             scheduler.step()
         # print loss
         print(f"train loss: {round(train_loss,5)}, "
@@ -58,7 +58,7 @@ def Train(model, train_DL, val_DL, criterion, optimizer,
                 "BATCH_SIZE": BATCH_SIZE,
                 "TRAIN_RATIO": TRAIN_RATIO}, save_history_path)
     
-    return loss_history
+    return loss_history, acc_history
 
 def Test(model, test_DL, criterion):
     model.eval()
